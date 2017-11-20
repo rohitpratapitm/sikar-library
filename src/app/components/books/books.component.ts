@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import { BooksProxy } from './books.proxy';
 import { Book } from './book.model';
