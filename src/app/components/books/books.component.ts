@@ -16,7 +16,7 @@ import { Book } from './book.model';
 })
 export class BooksComponent implements OnInit {
 
-    private booksStream: Observable<Array<Book>>;
+    booksStream: Observable<Array<Book>>;
 
     constructor(private booksProxy: BooksProxy) {
 
