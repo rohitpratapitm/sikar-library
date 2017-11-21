@@ -1,0 +1,52 @@
+<div class="example-container mat-elevation-z8">
+    <mat-table [dataSource]="playerDataSource" matSort>
+        <!-- Player Id Column -->
+        <ng-container matColumnDef="player_id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Player Id </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.player_id}} </mat-cell>
+        </ng-container>
+
+        <!-- Player Full Name Column -->
+        <ng-container matColumnDef="display_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.display_name}} </mat-cell>
+        </ng-container>
+
+        <!-- Player First Name Column -->
+        <ng-container matColumnDef="first_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.first_name}} </mat-cell>
+        </ng-container>
+
+        <!-- Player Last Name Column -->
+        <ng-container matColumnDef="last_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.last_name}} </mat-cell>
+        </ng-container>
+
+         <!-- Player Team Id Column -->
+         <ng-container matColumnDef="team_id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Team Id </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.team_id}} </mat-cell>
+        </ng-container>
+
+        <!-- Player Home URL Column -->
+        <ng-container matColumnDef="home_url">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Home URL </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.home_url}} </mat-cell>
+        </ng-container>
+
+        <!-- Player Uniform Number Column -->
+        <ng-container matColumnDef="uniform_number">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Uniform Number </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.uniform_number}} </mat-cell>
+        </ng-container>
+        <!--
+        <ng-container *ngFor="let col of columnValues; let i=index" matColumnDef={{col}}>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedColumns[i]}} </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player[col]}} </mat-cell>
+        </ng-container> -->
+        <mat-header-row *matHeaderRowDef="columnValues"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
+    </mat-table>
+</div>

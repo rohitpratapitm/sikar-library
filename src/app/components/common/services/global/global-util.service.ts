@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 export class GlobalUtilService {
 
     public static MICROSOFT_BROWSERS: string[] = ['MSie', 'Trident', 'Edge'];
+    // todo: replace server root with https://fantasysports.yahooapis.com/fantasy/v2/
     public static SERVER_ROOT: string = ' https://my-json-server.typicode.com/rohitpratapitm/fake-json-server/';
 
     constructor() {
