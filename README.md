@@ -1,10 +1,25 @@
 # SikarAngularLibrary
 
+It is just a skeleton to show coding practice and thinking approach. 
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
+
+
+## Production server
+The app has been deployed on Heroku Cloud and can be accessed on the following URL:
+https://dashboard.heroku.com/apps/sikar-library
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+As of now the player service is hitting a fake-json server which is running my repository(rohitpratapitm/fake-json-server) on github.
+
+To Dos : 
+1. Yahoo app authentication to access yahoo apis.
+2. Update Server Root URL to hit yahoo apis.
+3. Routing
+4. Built other components as per requirement.
 
 ## Code scaffolding
 
