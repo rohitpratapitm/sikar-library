@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { Player } from './player.model';
 import { PlayerService } from './player.service';
 
@@ -14,6 +14,7 @@ import { PlayerService } from './player.service';
 export class PlayerComponent  implements OnInit, AfterViewInit {
 
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     
     columnValues: string [] = ['player_id', 'display_name', 'first_name', 'last_name', 'team_id', 'home_url', 'uniform_number'];
 
@@ -32,6 +33,13 @@ export class PlayerComponent  implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.playerDataSource.sort = this.sort;
+        this.playerDataSource.paginator = this.paginator;
     }
+
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // defaults to lowercase matches
+        this.playerDataSource.filter = filterValue;
+      }
 
 }

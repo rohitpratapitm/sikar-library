@@ -1,4 +1,9 @@
 <div class="example-container mat-elevation-z8">
+    <div class="example-header">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+    </div>
     <mat-table [dataSource]="playerDataSource" matSort>
         <!-- Player Id Column -->
         <ng-container matColumnDef="player_id">
@@ -49,4 +54,5 @@
         <mat-header-row *matHeaderRowDef="columnValues"></mat-header-row>
         <mat-row *matRowDef="let row; columns: columnValues;"></mat-row>
     </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[3, 10, 20]"></mat-paginator>
 </div>
