@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { GlobalUtilService } from '../global/global-util.service';
 import { ResponseContentType } from '@angular/http/src/enums';
+import * as OAuth from 'oauth';
 
 @Injectable()
 export class HttpUtilService {
@@ -16,9 +17,21 @@ export class HttpUtilService {
     private static CONTENT_TYPE: string = 'Content-Type';
     private static MULTIPART_FORM: string = 'multipart/form-data';
     private static MIME_JSON: string = 'application/json';
-
+    private oauth: any;
 
     constructor(private http: Http, private globalUtilService: GlobalUtilService) {
+            console.log(' trying to authorize');
+            this.oauth = new OAuth.OAuth(
+                'https://api.login.yahoo.com/oauth/v2/get_request_token',
+                'https://api.login.yahoo.com/oauth/v2/get_token',
+                'dj0yJmk9Yjdsek5yV01FakJGJmQ9WVdrOWRUbGlXR2RuTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD0yMA--',
+                'db2f69ad9c2d7ac4e3fa53f9c2947e1b6a4f8e44',
+                '1.0',
+                null,
+                'HMAC-SHA1'
+              );
+            console.log(' successfully authorized: ' + this.oauth);
+            this.doOauthGET();
     }
 
     /**
@@ -68,6 +81,17 @@ export class HttpUtilService {
                 return toReturn;
             }).share()
             .catch((error: Response) => this.handleError(error));
+    }
+
+    public doOauthGET(): void {
+        this.oauth.get(
+            'https://fantasysports.yahooapis.com/fantasy/v2/game/nfl?format=json',
+            null,
+            null,
+            function(e, data, resp) {
+             data = JSON.parse(data);
+             console.log(JSON.stringify(data));
+           });
     }
 
     public doPOST<T>(aEndPointURL: string, aRequestObject: Object, aHeaders?: Headers,
