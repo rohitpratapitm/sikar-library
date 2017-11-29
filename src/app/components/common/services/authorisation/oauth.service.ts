@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { RequestOptions } from '@angular/http';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -15,7 +16,7 @@ export class AuthenticationService {
       
     }
 
-    public _make_signed_request() {
+    public _make_signed_request(): Observable<any> {
         
           // Only support GET in this function
           const method = 'GET';
@@ -54,10 +55,9 @@ export class AuthenticationService {
           }
 
         params = params.set('oauth_signature', encodeURI(signature));
-        this.http.get(this.url, {
-            params: params
-        }).subscribe(response => {
-        console.log('Response is : ' + response);
+        return this.http.get(this.url, {
+            params: params,
+            responseType: 'text'
         });
     }
 }

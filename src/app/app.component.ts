@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpUtilService, AuthenticationService } from './components/common/services/all';
 
 @Component({
@@ -6,7 +6,7 @@ import { HttpUtilService, AuthenticationService } from './components/common/serv
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(private httpUtilService: HttpUtilService, 
@@ -14,4 +14,9 @@ export class AppComponent {
 
   }
 
+  ngOnInit() {
+    this.authorisationService._make_signed_request().subscribe(response => {
+      console.log('Response is : ' + response);
+    });
+  }
 }
