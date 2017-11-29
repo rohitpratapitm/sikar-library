@@ -14,13 +14,12 @@ app.use(cors({
 */
 app.use(express.static(__dirname + '/dist'));
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
-
+app.use(cors());
 app.listen(process.env.PORT || 8080);
-
 app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 })
