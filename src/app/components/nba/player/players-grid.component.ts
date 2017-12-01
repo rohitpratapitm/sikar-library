@@ -26,9 +26,9 @@ export class PlayerComponent  implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.playerDataSource = new MatTableDataSource();
-        this.playerService.getPlayerStream().subscribe(players => {
-            this.playerDataSource.data = players;
-        });
+        // this.playerService.getPlayerStream().subscribe(players => {
+        //     this.playerDataSource.data = players;
+        // });
     }
 
     ngAfterViewInit() {
