@@ -11,7 +11,9 @@ import { PlayerComponent } from './components/nba/player/players-grid.component'
 import { LoginComponent } from './components/common/login/login.component';
 
 const appRoutes: Routes = [
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/players', component: PlayerComponent},
+  { path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({
