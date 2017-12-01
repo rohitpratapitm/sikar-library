@@ -12,7 +12,7 @@ import { LoginComponent } from './components/common/login/login.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/players', component: PlayerComponent},
+  { path: '/players', component: PlayerComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
