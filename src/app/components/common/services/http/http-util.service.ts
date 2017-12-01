@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { GlobalUtilService } from '../global/global-util.service';
 import { ResponseContentType } from '@angular/http/src/enums';
+import * as OAuth from 'oauth';
 
 @Injectable()
 export class HttpUtilService {
@@ -16,7 +17,7 @@ export class HttpUtilService {
     private static CONTENT_TYPE: string = 'Content-Type';
     private static MULTIPART_FORM: string = 'multipart/form-data';
     private static MIME_JSON: string = 'application/json';
-
+    private oauth: any;
 
     constructor(private http: Http, private globalUtilService: GlobalUtilService) {
     }
