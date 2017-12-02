@@ -18,7 +18,7 @@ export class OAuth2Service  {
     private readonly ACCESS_TOKEN_URL: string = 'https://api.login.yahoo.com/oauth2/get_token';
     private readonly signature_method: string = 'PLAINTEXT';
     private readonly signature_method_hma: string = 'HMAC-SHA1';
-    private readonly REDIRECT_URI: string = 'https://sikar-app-dev.herokuapp.com/login';
+    private readonly REDIRECT_URI: string = 'https://sikar-library.herokuapp.com/login';
     private readonly REDIRECT_URI_LOCAL: string = 'http://127.0.0.1:8080/login';
     private readonly URL_PARAM_SEPARATOR: string = '?';
     private readonly QUERY_PARAM_SEPARATOR: string = '&';
