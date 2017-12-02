@@ -22,7 +22,14 @@ app.use(cors({
         'api.login.yahoo.com'
     ]
  }));
+ app.use(function(req, res, next) {
+     console.log('Inside server.js ');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 app.get('*', function(req, res) {
+    console.error('inside join');
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 })
 app.listen(process.env.PORT || 8080);
