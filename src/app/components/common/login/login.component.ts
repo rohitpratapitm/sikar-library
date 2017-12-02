@@ -9,9 +9,13 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+    readonly AUTHORIZATION_URL;
+
     constructor(private authenticationService: AuthenticationService,
         private oAuth2Service: OAuth2Service,
         private router: ActivatedRoute) {
+
+        this.AUTHORIZATION_URL = this.oAuth2Service.getAuthorizationURL();
     }
 
     ngOnInit() {
