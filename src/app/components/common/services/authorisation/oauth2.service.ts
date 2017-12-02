@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Params } from '@angular/router';
 import { error } from 'util';
 
+declare var process: any;
 /**
  * Authorisation flow
  */
@@ -17,20 +18,26 @@ export class OAuth2Service  {
     private readonly ACCESS_TOKEN_URL: string = 'https://api.login.yahoo.com/oauth2/get_token';
     private readonly signature_method: string = 'PLAINTEXT';
     private readonly signature_method_hma: string = 'HMAC-SHA1';
-    private readonly redirect_uri: string = 'https://sikar-library.herokuapp.com/login';
+    private readonly REDIRECT_URI: string = 'https://sikar-app-dev.herokuapp.com/login';
+    private readonly REDIRECT_URI_LOCAL: string = 'http://127.0.0.1:8080/login';
     private readonly URL_PARAM_SEPARATOR: string = '?';
     private readonly QUERY_PARAM_SEPARATOR: string = '&';
     private readonly QUERY_VALUE_SEPARATOR: string = '=';
+    private CONFIG: any;
+
     constructor(private http: HttpClient) {
-      
     }
 
     // 1. Get an Authorization URL and authorize access
     public getAuthorizationURL(): string {
         
+        let redirect_uri = this.REDIRECT_URI;
+        if (process.env.NODE_ENV === 'dev') {
+            redirect_uri = this.REDIRECT_URI_LOCAL;
+        }
         return this.AUTHORIZATION_URL
         .concat(this.URL_PARAM_SEPARATOR).concat('client_id', this.QUERY_VALUE_SEPARATOR, this.consumer_key)
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.QUERY_VALUE_SEPARATOR, this.redirect_uri)
+        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.QUERY_VALUE_SEPARATOR, redirect_uri)
         .concat(this.QUERY_PARAM_SEPARATOR).concat('response_type', this.QUERY_VALUE_SEPARATOR, 'code')
         .concat(this.QUERY_PARAM_SEPARATOR).concat('language', this.QUERY_VALUE_SEPARATOR, 'en-us');
     }
@@ -45,7 +52,7 @@ export class OAuth2Service  {
         // construct body
         const params: HttpParams = new HttpParams()
         .append('grant_type', 'authorization_code')
-        .append('redirect_uri', this.redirect_uri)
+        .append('redirect_uri', this.REDIRECT_URI)
         .append('code', code);
 
         console.log('calling post request');
