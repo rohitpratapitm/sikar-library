@@ -19,10 +19,12 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        console.log(' Inside Login ');
         this.router.queryParams.subscribe((queryParams: Params) => {
+            console.log('Inside subscription');
             let code: string = queryParams['code'];
             if (code) {
+                console.log('found code' + code);
                 this.oAuth2Service.getAccessToken(code);
             }
         });

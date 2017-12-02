@@ -17,7 +17,7 @@ export class OAuth2Service  {
     private readonly ACCESS_TOKEN_URL: string = 'https://api.login.yahoo.com/oauth2/get_token';
     private readonly signature_method: string = 'PLAINTEXT';
     private readonly signature_method_hma: string = 'HMAC-SHA1';
-    private readonly redirect_uri: string = 'http://sikar-library.herokuapp.com/login';
+    private readonly redirect_uri: string = 'https://sikar-library.herokuapp.com/login';
     private readonly URL_PARAM_SEPARATOR: string = '?';
     private readonly QUERY_PARAM_SEPARATOR: string = '&';
     private readonly QUERY_VALUE_SEPARATOR: string = '=';
@@ -48,6 +48,7 @@ export class OAuth2Service  {
         .append('redirect_uri', this.redirect_uri)
         .append('code', code);
 
+        console.log('calling post request');
         this.http.post(this.ACCESS_TOKEN_URL, params, {
             headers: headers, responseType: 'text'
         }).subscribe(response => {

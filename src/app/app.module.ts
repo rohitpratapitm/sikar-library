@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, LoginComponent, PlayerComponent
   ],
-  imports: [ RouterModule.forRoot(appRoutes, {enableTracing: true}), 
+  imports: [ RouterModule.forRoot(appRoutes, {enableTracing: false }), 
     BrowserModule, BrowserAnimationsModule, HttpModule, HttpClientModule, MaterialModule,
   ],
   providers: [Title, GlobalUtilService, HttpUtilService, AuthenticationService, OAuth2Service],
