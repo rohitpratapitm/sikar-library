@@ -5,20 +5,23 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const db = require("./mongo");
 const cors = require('express-cors');
-/*
-app.use(cors({
-   allowedOrigins: [
-       'github.com', 'google.com', 'http://localhost:8080/'
-   ]
-}));
-*/
+
 app.use(express.static(__dirname + '/dist'));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use(cors());
+app.use(cors({
+    allowedOrigins: [
+        'https://sikar-library.herokuapp.com', 
+        'https://sikar-library.herokuapp.com/login', 
+        'sikar-library.herokuapp.com',
+        'sikar-library.herokuapp.com/login',
+        'http://evil.com/',
+        'api.login.yahoo.com'
+    ]
+ }));
 app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 })
