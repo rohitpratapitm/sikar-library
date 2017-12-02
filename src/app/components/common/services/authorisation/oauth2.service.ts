@@ -18,8 +18,9 @@ export class OAuth2Service  {
     private readonly signature_method: string = 'PLAINTEXT';
     private readonly signature_method_hma: string = 'HMAC-SHA1';
     private readonly redirect_uri: string = 'http://sikar-library.herokuapp.com/login';
-    private readonly QUERY_PARAM_SEPARATOR: string = '?';
-
+    private readonly URL_PARAM_SEPARATOR: string = '?';
+    private readonly QUERY_PARAM_SEPARATOR: string = '&';
+    private readonly QUERY_VALUE_SEPARATOR: string = '=';
     constructor(private http: HttpClient) {
       
     }
@@ -28,10 +29,10 @@ export class OAuth2Service  {
     public getAuthorizationURL(): string {
         
         return this.AUTHORIZATION_URL
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('client_id', this.consumer_key)
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.redirect_uri)
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('response_type', 'code')
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('language', 'en-us');
+        .concat(this.URL_PARAM_SEPARATOR).concat('client_id', this.QUERY_VALUE_SEPARATOR, this.consumer_key)
+        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.QUERY_VALUE_SEPARATOR, this.redirect_uri)
+        .concat(this.QUERY_PARAM_SEPARATOR).concat('response_type', this.QUERY_VALUE_SEPARATOR, 'code')
+        .concat(this.QUERY_PARAM_SEPARATOR).concat('language', this.QUERY_VALUE_SEPARATOR, 'en-us');
     }
 
     // 2. GET an ACCESS TOKEN
