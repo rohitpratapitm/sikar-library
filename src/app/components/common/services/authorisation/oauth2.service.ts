@@ -52,15 +52,14 @@ export class OAuth2Service  {
         .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
         // construct body
-        const params: HttpParams = new HttpParams()
-        .append('grant_type', 'authorization_code')
-        .append('redirect_uri', this.REDIRECT_URI)
-        .append('code', code);
-
+        const body: any = {
+            'grant_type' : 'authorization_code',
+            'redirect_uri' : this.REDIRECT_URI,
+            'code' : code
+        };
         console.log('calling post request');
-        this.http.post(this.ACCESS_TOKEN_URL, params, {
-            headers: headers
-        }).subscribe(response => {
+        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers})
+        .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
             }

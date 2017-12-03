@@ -23,7 +23,7 @@ app.use(cors({
     ]
  }));
  app.use(function(req, res, next) {
-    console.log('Inside server.js '+ req.headers);
+    console.log('Inside server.js '+ JSON.stringify(req.headers));
     console.log('Status Code : ' + req.statusCode);
     console.log('URL : ' + req.url); 
     console.log('Method ' + req.method);
