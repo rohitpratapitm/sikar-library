@@ -23,10 +23,12 @@ app.use(cors({
     ]
  }));
  app.use(function(req, res, next) {
-     console.log('Inside server.js ');
+     console.log('Inside server.js '+ req.headers());
+    console.log('Status Code : ' + req.statusCode);
+    console.log('URL : ' + req.url);
+    console.log('Status Message : ' + req.statusMessage);
     req.header("Origin", "*");
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
     next();
   });
 app.get('*', function(req, res) {
