@@ -49,7 +49,7 @@ export class OAuth2Service  {
 
         // create header
         const headers: HttpHeaders = new HttpHeaders()
-        .append('Content-Type', 'application/x-www-form-urlencoded')
+        // .append('Content-Type', 'application/x-www-form-urlencoded')
         .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
         // construct body
@@ -59,7 +59,7 @@ export class OAuth2Service  {
             'code' : code
         };
         console.log('calling post request');
-        this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body))
+        this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body), { headers: headers})
         .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
