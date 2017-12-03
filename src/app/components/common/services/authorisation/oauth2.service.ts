@@ -52,14 +52,14 @@ export class OAuth2Service  {
         .append('Content-Type', 'application/x-www-form-urlencoded')
         .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
+        console.log(' Authorization header is : ' + headers.get('Authorization'));
         // construct body
-        const body: any = {
-            grant_type : 'authorization_code',
-            redirect_uri : this.REDIRECT_URI,
-            code : code
-        };
-        console.log('calling post request');
-        this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body), { headers: headers})
+        const param: any = new HttpParams()
+            .append('grant_type', 'authorization_code')
+            .append('redirect_uri', encodeURI(this.REDIRECT_URI))
+            .append('code', code);
+        console.log('calling get request');
+        this.http.get(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), { headers: headers , params: param})
         .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
