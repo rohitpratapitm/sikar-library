@@ -55,13 +55,13 @@ export class OAuth2Service  {
         // construct body
         const body: any = {
             grant_type : 'authorization_code',
-            redirect_uri : this.REDIRECT_URI,
+            redirect_uri : encodeURI(this.REDIRECT_URI),
             code : code
         };
 
         const params: HttpParams = new HttpParams()
         .append('grant_type', 'authorization_code')
-        .append('redirect_uri', this.REDIRECT_URI)
+        .append('redirect_uri', encodeURI(this.REDIRECT_URI))
         .append('code', code);
 
         console.log('calling post request');
