@@ -23,9 +23,10 @@ app.use(cors({
     ]
  }));
  app.use(function(req, res, next) {
-     console.log('Inside server.js '+ req.headers());
+    console.log('Inside server.js '+ req.headers);
     console.log('Status Code : ' + req.statusCode);
-    console.log('URL : ' + req.url);
+    console.log('URL : ' + req.url); 
+    console.log('Method ' + req.method);
     console.log('Status Message : ' + req.statusMessage);
     req.header("Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
