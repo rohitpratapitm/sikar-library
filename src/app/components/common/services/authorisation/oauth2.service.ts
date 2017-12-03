@@ -59,7 +59,7 @@ export class OAuth2Service  {
             'code' : code
         };
         console.log('calling post request');
-        this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body), { headers: headers})
+        this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body))
         .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
