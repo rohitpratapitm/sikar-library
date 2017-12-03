@@ -55,7 +55,7 @@ export class OAuth2Service  {
         // construct body
         const body: any = {
             grant_type : 'authorization_code',
-            redirect_uri : encodeURI(this.REDIRECT_URI),
+            redirect_uri : 'oob',
             code : code
         };
 
@@ -65,7 +65,7 @@ export class OAuth2Service  {
         .append('code', code);
 
         console.log('calling post request');
-        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers, params: params})
+        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers})
         .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
