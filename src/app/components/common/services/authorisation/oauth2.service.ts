@@ -49,8 +49,8 @@ export class OAuth2Service  {
 
         // create header
         const headers: HttpHeaders = new HttpHeaders()
-        // .append('Content-Type', 'application/x-www-form-urlencoded')
-        .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
+        .append('Content-Type', 'application/x-www-form-urlencoded');
+        // .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
         // construct body
         const body: any = {
