@@ -12,27 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use(cors({
-    allowedOrigins: [
-        'https://sikar-library.herokuapp.com', 
-        'https://sikar-library.herokuapp.com/login', 
-        'sikar-library.herokuapp.com',
-        'sikar-library.herokuapp.com/login',
-        'http://evil.com/',
-        'api.login.yahoo.com'
-    ]
- }));
- app.use(function(req, res, next) {
-    console.log('Inside server.js '+ JSON.stringify(req.headers));
-    console.log('Status Code : ' + req.statusCode);
-    console.log('URL : ' + req.url); 
-    console.log('Method ' + req.method);
-    console.log('Status Message : ' + req.statusMessage);
-    req.header("Origin", "*");
-    res.header("Access-Control-Allow-Methods", "POST")
-    res.header("Access-Control-Allow-Headers", "Authorization, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+
 app.get('*', function(req, res) {
     console.error('inside join');
     res.sendFile(path.join(__dirname + '/dist/index.html'));
