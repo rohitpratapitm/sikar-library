@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const db = require("./mongo");
+// const db = require("./mongo");
 const cors = require('express-cors');
 
 app.use(express.static(__dirname + '/dist'));
@@ -24,6 +24,7 @@ app.use(cors({
  }));
  app.use(function(req, res, next) {
      console.log('Inside server.js ');
+    req.header("Origin", "*");
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();

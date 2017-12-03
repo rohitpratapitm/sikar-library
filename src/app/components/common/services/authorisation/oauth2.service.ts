@@ -32,7 +32,8 @@ export class OAuth2Service  {
     public getAuthorizationURL(): string {
         
         let redirect_uri = this.REDIRECT_URI;
-        if (process.env.NODE_ENV === 'dev') {
+        console.log('mode is ' + process.env.NODE_ENV);
+        if (process.env.NODE_ENV === 'development') {
             redirect_uri = this.REDIRECT_URI_LOCAL;
         }
         return this.AUTHORIZATION_URL
@@ -47,6 +48,7 @@ export class OAuth2Service  {
 
         // create header
         const headers: HttpHeaders = new HttpHeaders()
+        .append('Content-Type', 'application/x-www-form-urlencoded')
         .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
         // construct body
@@ -57,7 +59,7 @@ export class OAuth2Service  {
 
         console.log('calling post request');
         this.http.post(this.ACCESS_TOKEN_URL, params, {
-            headers: headers, responseType: 'text'
+            headers: headers
         }).subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
