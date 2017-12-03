@@ -16,7 +16,7 @@ export class OAuth2Service  {
     private readonly consumer_secret: string = 'db2f69ad9c2d7ac4e3fa53f9c2947e1b6a4f8e44';
     private readonly AUTHORIZATION_URL: string = 'https://api.login.yahoo.com/oauth2/request_auth';
     private readonly ACCESS_TOKEN_URL: string = 'https://api.login.yahoo.com/oauth2/get_token';
-    private readonly REVERSE_PROXY_URL: string = 'https://dashboard.heroku.com/apps/enigmatic-crag-82503'
+    private readonly REVERSE_PROXY_URL: string = 'https://dashboard.heroku.com/apps/enigmatic-crag-82503';
     private readonly signature_method: string = 'PLAINTEXT';
     private readonly signature_method_hma: string = 'HMAC-SHA1';
     private readonly REDIRECT_URI: string = 'https://sikar-library.herokuapp.com/login';
@@ -49,14 +49,14 @@ export class OAuth2Service  {
 
         // create header
         const headers: HttpHeaders = new HttpHeaders()
-        .append('Content-Type', 'application/x-www-form-urlencoded');
-        // .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
+        .append('Content-Type', 'application/x-www-form-urlencoded')
+        .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
 
         // construct body
         const body: any = {
-            'grant_type' : 'authorization_code',
-            'redirect_uri' : this.REDIRECT_URI,
-            'code' : code
+            grant_type : 'authorization_code',
+            redirect_uri : this.REDIRECT_URI,
+            code : code
         };
         console.log('calling post request');
         this.http.post(this.REVERSE_PROXY_URL.concat('/', this.ACCESS_TOKEN_URL), JSON.stringify(body), { headers: headers})
