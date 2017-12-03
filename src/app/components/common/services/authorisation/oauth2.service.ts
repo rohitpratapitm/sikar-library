@@ -58,8 +58,14 @@ export class OAuth2Service  {
             redirect_uri : this.REDIRECT_URI,
             code : code
         };
+
+        const params: HttpParams = new HttpParams()
+        .append('grant_type', 'authorization_code')
+        .append('redirect_uri', this.REDIRECT_URI)
+        .append('code', code);
+
         console.log('calling post request');
-        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers})
+        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers, params: params})
         .subscribe(response => {
             if (response) {
                 console.log(' Response is : ' + response);
