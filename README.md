@@ -11,7 +11,7 @@ https://dashboard.heroku.com/apps/sikar-library
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:80/`. The app will automatically reload if you change any of the source files.
 
 As of now the player service is hitting a fake-json server which is running my repository(rohitpratapitm/fake-json-server) on github.
 

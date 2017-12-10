@@ -1,76 +1,94 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http/src/response';
-import { Params } from '@angular/router';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Params, ActivatedRoute } from '@angular/router';
 import { error } from 'util';
+import { GlobalUtilService } from '../global/global-util.service';
 
-declare var process: any;
+
 /**
  * Authorisation flow
  */
 @Injectable()
 export class OAuth2Service  {
 
-    private readonly consumer_key: string = 'dj0yJmk9Yjdsek5yV01FakJGJmQ9WVdrOWRUbGlXR2RuTTJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD0yMA--';
-    private readonly consumer_secret: string = 'db2f69ad9c2d7ac4e3fa53f9c2947e1b6a4f8e44';
     private readonly AUTHORIZATION_URL: string = 'https://api.login.yahoo.com/oauth2/request_auth';
-    private readonly ACCESS_TOKEN_URL: string = 'https://api.login.yahoo.com/oauth2/get_token';
-    private readonly REVERSE_PROXY_URL: string = 'https://dashboard.heroku.com/apps/enigmatic-crag-82503';
-    private readonly signature_method: string = 'PLAINTEXT';
-    private readonly signature_method_hma: string = 'HMAC-SHA1';
-    private readonly REDIRECT_URI: string = 'https://sikar-library.herokuapp.com/login';
-    private readonly REDIRECT_URI_LOCAL: string = 'http://127.0.0.1:8080/login';
+    private readonly ACCESS_TOKEN_URL: string = '/api/get_token';
+    
     private readonly URL_PARAM_SEPARATOR: string = '?';
     private readonly QUERY_PARAM_SEPARATOR: string = '&';
     private readonly QUERY_VALUE_SEPARATOR: string = '=';
     private CONFIG: any;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+        private router: ActivatedRoute, 
+        private global: GlobalUtilService) {
     }
 
     // 1. Get an Authorization URL and authorize access
     public getAuthorizationURL(): string {
         
-        let redirect_uri = this.REDIRECT_URI;
-        console.log('mode is ' + process.env.NODE_ENV);
-        if (process.env.NODE_ENV === 'development') {
-            redirect_uri = this.REDIRECT_URI_LOCAL;
-        }
         return this.AUTHORIZATION_URL
-        .concat(this.URL_PARAM_SEPARATOR).concat('client_id', this.QUERY_VALUE_SEPARATOR, this.consumer_key)
-        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.QUERY_VALUE_SEPARATOR, redirect_uri)
+        .concat(this.URL_PARAM_SEPARATOR).concat('client_id', this.QUERY_VALUE_SEPARATOR, this.global.getAppKey())
+        .concat(this.QUERY_PARAM_SEPARATOR).concat('redirect_uri', this.QUERY_VALUE_SEPARATOR, this.global.getRedirectURI())
         .concat(this.QUERY_PARAM_SEPARATOR).concat('response_type', this.QUERY_VALUE_SEPARATOR, 'code')
         .concat(this.QUERY_PARAM_SEPARATOR).concat('language', this.QUERY_VALUE_SEPARATOR, 'en-us');
     }
 
     // 2. GET an ACCESS TOKEN
-    public getAccessToken(code: string): void {
+    public getAccessToken(code?: string, refreshToken?: string): void {
 
         // create header
         const headers: HttpHeaders = new HttpHeaders()
         .append('Content-Type', 'application/x-www-form-urlencoded')
-        .append('Authorization', 'Basic '.concat(btoa(this.consumer_key.concat(':').concat(this.consumer_secret))));
+        .append('Authorization', 'Basic '.concat(btoa(this.global.getAppKey().concat(':').concat(this.global.getAppSecret()))));
 
         // construct body
-        const body: any = {
-            grant_type : 'authorization_code',
-            redirect_uri : 'oob',
-            code : code
-        };
+        const body: URLSearchParams = new URLSearchParams();
+        const grantType: string = code ? 'authorization_code' : refreshToken;
+        body.append('grant_type', grantType);
+        body.append('redirect_uri', encodeURI(this.global.getRedirectURI()));
+        // either set code OR refresh toen
+        code ? body.append('code', code) : body.set('refresh_token', refreshToken);
 
-        const params: HttpParams = new HttpParams()
-        .append('grant_type', 'authorization_code')
-        .append('redirect_uri', encodeURI(this.REDIRECT_URI))
-        .append('code', code);
-
-        console.log('calling post request');
-        this.http.post(this.ACCESS_TOKEN_URL, JSON.stringify(body), { headers: headers})
+        this.http.post(this.ACCESS_TOKEN_URL, body.toString(), { headers: headers})
         .subscribe(response => {
             if (response) {
-                console.log(' Response is : ' + response);
+    // 3.   dispach the token to store
+               this.setTokenResponse(response);
             }
         }, ((err: HttpErrorResponse) => this.handleError(err)));
+    }
+
+    public refreshToken(): void {
+        this.getAccessToken(undefined, localStorage.getItem('refresh_token'));
+    }
+
+    public isTokenExpired(): boolean {
+        const validTill: number = Number(localStorage.getItem('validTill'));
+        if (validTill < new Date().getMilliseconds()) {
+            return true;
+        }
+        return false;
+    }
+
+    public getToken(): void {
+        const token: string = localStorage.getItem('token');
+        if (token) {
+            // check if it is still valid
+            if (this.isTokenExpired) {
+                // refresh it
+                this.refreshToken();
+            }
+        } 
+    }
+    private setTokenResponse(response: Object): void {
+        localStorage.setItem('token', response['access_token']);
+        localStorage.setItem('refresh_token', response['refresh_token']);
+        localStorage.setItem('token_type', response['token_type']);
+        // set the time untill this token is valid
+        const validTill = new Date().getMilliseconds() + response['expires_in'];
+        localStorage.setItem('validTill', validTill);
     }
 
     private handleError(err: HttpErrorResponse): void {

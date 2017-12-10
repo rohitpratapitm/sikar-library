@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpUtilService, AuthenticationService, OAuth2Service } from './components/common/services/all';
+import { HttpUtilService, OAuth2Service } from './components/common/services/all';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,6 @@ export class AppComponent {
   title = 'app';
 
   constructor(private httpUtilService: HttpUtilService, 
-              private authorisationService: AuthenticationService,
               private oAuth2Service: OAuth2Service) {
   }
 }
