@@ -13,7 +13,7 @@ import { GlobalUtilService } from '../global/global-util.service';
 export class OAuth2Service  {
 
     private readonly AUTHORIZATION_URL: string = 'https://api.login.yahoo.com/oauth2/request_auth';
-    private readonly ACCESS_TOKEN_URL: string = '/api/get_token';
+    private readonly ACCESS_TOKEN_URL: string = '/oauth2/get_token';
     
     private readonly URL_PARAM_SEPARATOR: string = '?';
     private readonly QUERY_PARAM_SEPARATOR: string = '&';
