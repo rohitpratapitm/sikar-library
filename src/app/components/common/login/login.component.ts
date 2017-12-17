@@ -11,6 +11,7 @@ import 'rxjs/add/operator/skipWhile';
 export class LoginComponent implements OnInit {
 
     readonly AUTHORIZATION_URL;
+    token: string;
 
     constructor(private oAuth2Service: OAuth2Service,
         private router: Router, 
@@ -28,7 +29,8 @@ export class LoginComponent implements OnInit {
                 .skipWhile(response => {
                     return (response === undefined) ? true : false ;
                 })
-                .subscribe(response => {
+                .subscribe(token => {
+                    this.token = token;
                     this.router.navigateByUrl('/players');
                 });
             }
