@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { GlobalUtilService } from '../global/global-util.service';
 import { ResponseContentType } from '@angular/http/src/enums';
-import * as OAuth from 'oauth';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class HttpUtilService {
@@ -17,9 +17,9 @@ export class HttpUtilService {
     private static CONTENT_TYPE: string = 'Content-Type';
     private static MULTIPART_FORM: string = 'multipart/form-data';
     private static MIME_JSON: string = 'application/json';
-    private oauth: any;
+    private static AUTHORIZATION: string = 'Authorization';
 
-    constructor(private http: Http, private globalUtilService: GlobalUtilService) {
+    constructor(private http: HttpClient, private globalUtilService: GlobalUtilService) {
     }
 
     /**
@@ -43,45 +43,25 @@ export class HttpUtilService {
      * @param existingHeaders 
      * @param enableMultipartForm 
      */
-    public initializeDefaultHeaders(existingHeaders?: Headers, enableMultipartForm?: boolean): Headers {
+    public initializeDefaultHeaders(): HttpHeaders {
 
-        const headers: Headers = existingHeaders ? existingHeaders : new Headers();
-        if (!headers.has(HttpUtilService.CONTENT_TYPE)) {
-            if (enableMultipartForm) {
-                if (!this.globalUtilService.isBrowserIE()) {
-                    headers.append(HttpUtilService.CONTENT_TYPE, HttpUtilService.MULTIPART_FORM);
-                }
-            } else {
-                headers.append(HttpUtilService.CONTENT_TYPE, HttpUtilService.MIME_JSON);
-            }
-        }
+        const headers: HttpHeaders = new HttpHeaders();
+        headers.append(HttpUtilService.AUTHORIZATION, 'Bearer ' + localStorage.getItem('token'));
         return headers;
     }
 
-    public doGET<T>(aEndPointURL: string, aHeaders?: Headers): Observable<T> {
+    public doGET<T>(aEndPointURL: string, params?: HttpParams): Observable<T> {
 
-        const headers: Headers = this.initializeDefaultHeaders(aHeaders);
-        return this.http.get(
-            this.getUrl(aEndPointURL),
-            { headers: headers, withCredentials: true })
-            .map((response: Response) => {
-                const toReturn: T = response.json();
-                return toReturn;
-            }).share()
-            .catch((error: Response) => this.handleError(error));
+        return this.http.get(aEndPointURL, {
+            params: this.defaultParams(params)
+        }).share().catch((error: Response) => this.handleError(error));
     }
 
     public doPOST<T>(aEndPointURL: string, aRequestObject: Object, aHeaders?: Headers,
         aResponseType?: ResponseContentType, aParams?: { [key: string]: any | any[]; }): Observable<T> {
             return this.http.post(
                 this.getUrl(aEndPointURL),
-                this.getRequestObjectAsString(aRequestObject),
-                {
-                    headers: this.initializeDefaultHeaders(),
-                    withCredentials: true,
-                    responseType: aResponseType,
-                    params: aParams
-                }
+                this.getRequestObjectAsString(aRequestObject)
             )
             .map((response: Response) => {
                 const toReturn: T = response.json();
@@ -101,5 +81,9 @@ export class HttpUtilService {
         } else {
             throw new Error('Error: End point url is empty');
         }
+    }
+
+    private defaultParams(userParams?: HttpParams): HttpParams {
+        return userParams ? userParams.set('format', 'json') : new HttpParams().set('format', 'json');
     }
 }

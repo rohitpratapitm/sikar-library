@@ -1,3 +1,6 @@
 <div class="align-right">
     <a class="btn btn-default" href={{AUTHORIZATION_URL}}>Login</a>
 </div>
+<div *ngIf="token">
+    <player-details></player-details>
+</div>

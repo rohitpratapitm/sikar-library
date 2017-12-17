@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
@@ -6,9 +6,10 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { GlobalUtilService, HttpUtilService, OAuth2Service, } from './components/common/services/all';
+import { GlobalUtilService, SessionManagerService, HttpUtilService, OAuth2Service } from './components/common/services/all';
 import { PlayerComponent } from './components/nba/player/players-grid.component';
 import { LoginComponent } from './components/common/login/login.component';
+import { AuthenticationInterceptor } from './components/common/services/authorisation/outh.interceptor';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,7 +24,13 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes),
     BrowserModule, BrowserAnimationsModule, HttpModule, HttpClientModule, MaterialModule,
   ],
-  providers: [Title, GlobalUtilService, HttpUtilService, OAuth2Service],
+  providers: [
+    Title, SessionManagerService, GlobalUtilService, OAuth2Service,  
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }, HttpUtilService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

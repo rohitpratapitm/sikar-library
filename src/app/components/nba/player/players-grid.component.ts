@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
-import { Player } from './player.model';
+import { Player } from '../fantasy.model';
 import { PlayerService } from './player.service';
 
 
@@ -26,9 +26,9 @@ export class PlayerComponent  implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.playerDataSource = new MatTableDataSource();
-        // this.playerService.getPlayerStream().subscribe(players => {
-        //     this.playerDataSource.data = players;
-        // });
+        this.playerService.getPlayerStream().subscribe(players => {
+            this.playerDataSource.data = players;
+        });
     }
 
     ngAfterViewInit() {

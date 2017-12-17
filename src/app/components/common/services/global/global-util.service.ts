@@ -25,6 +25,9 @@ export class GlobalUtilService {
         return false;
     }
 
+    public isDevMode(): boolean {
+        return !environment.production;
+    }
     public hasServerRoot(): boolean {
         return GlobalUtilService.SERVER_ROOT.length > 0 ;
     }
@@ -33,7 +36,6 @@ export class GlobalUtilService {
         return GlobalUtilService.SERVER_ROOT;
     }
 
-    
     public getRedirectURI(): string {
         return environment.redirect_uri;
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuth2Service } from '../services/all';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import 'rxjs/add/operator/skipWhile';
 
 @Component({
     selector: 'login',
@@ -12,19 +13,24 @@ export class LoginComponent implements OnInit {
     readonly AUTHORIZATION_URL;
 
     constructor(private oAuth2Service: OAuth2Service,
-        private router: ActivatedRoute) {
+        private router: Router, 
+        private activatedRoute: ActivatedRoute) {
 
         this.AUTHORIZATION_URL = this.oAuth2Service.getAuthorizationURL();
     }
 
     ngOnInit() {
-        console.log(' Inside Login ');
-        this.router.queryParams.subscribe((queryParams: Params) => {
-            console.log('Inside subscription');
+        this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
             const code: string = queryParams['code'];
             if (code) {
                 console.log('found code' + code);
-                this.oAuth2Service.getAccessToken(code);
+                this.oAuth2Service.getToken(code)
+                .skipWhile(response => {
+                    return (response === undefined) ? true : false ;
+                })
+                .subscribe(response => {
+                    this.router.navigateByUrl('/players');
+                });
             }
         });
     }

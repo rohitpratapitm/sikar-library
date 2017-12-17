@@ -15,14 +15,26 @@ app.use(express.static(__dirname + '/dist'));
 // parse application/json
 // app.use(bodyParser.json());
 // app.use(methodOverride('X-HTTP-Method-Override'));
-
+const API_REWRITE_RULE = {"^/api": ""}
 // Add middleware for http proxying 
-const apiProxy = httpProxy('/oauth2', 
-    { target: 'https://api.login.yahoo.com',
-    secure: false,
-    changeOrigin: true
-     });
-app.use('/oauth2', apiProxy);
+const authRule = httpProxy('/oauth2',
+    {
+        target: 'https://api.login.yahoo.com',
+        secure: false,
+        changeOrigin: true,
+        logLevel: "debug"
+    });
+app.use('/oauth2', authRule);
+
+const apiRule = httpProxy('/api',
+    {
+        target: 'https://fantasysports.yahooapis.com/fantasy/v2',
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: API_REWRITE_RULE,
+        logLevel: "debug"
+    });
+app.use('/api', apiRule);
 
 app.get('*', function(req, res) {
     console.error('inside join');

@@ -38,7 +38,9 @@
         <!-- Player Home URL Column -->
         <ng-container matColumnDef="home_url">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Home URL </mat-header-cell>
-            <mat-cell *matCellDef="let player"> {{player.home_url}} </mat-cell>
+            <mat-cell *matCellDef="let player"> 
+                <img src="{{player.home_url}}"/>
+            </mat-cell>
         </ng-container>
 
         <!-- Player Uniform Number Column -->
