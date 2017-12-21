@@ -20,6 +20,7 @@ export class PlayerComponent  implements OnInit, AfterViewInit {
 
     playerDataSource: MatTableDataSource<Player>;
 
+    showSpinner: boolean = true;
 
     constructor(private playerService: PlayerService) {
     }
@@ -28,6 +29,7 @@ export class PlayerComponent  implements OnInit, AfterViewInit {
         this.playerDataSource = new MatTableDataSource();
         this.playerService.getPlayerStream().subscribe(players => {
             this.playerDataSource.data = players;
+            this.showSpinner = false;
         });
     }
 

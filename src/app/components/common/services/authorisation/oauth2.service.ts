@@ -56,6 +56,10 @@ export class OAuth2Service {
     public isDevMode(): boolean {
         return this.global.isDevMode();
     }
+
+    public logOut(): void {
+        this.sessionManager.deleteToken();
+    }
     // 2. GET an ACCESS TOKEN
     private getAccessToken(code?: string): Observable<Object> {
 

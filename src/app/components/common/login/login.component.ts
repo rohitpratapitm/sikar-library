@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OAuth2Service } from '../services/all';
+import { OAuth2Service, LoggerService } from '../services/all';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/skipWhile';
 
@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
     constructor(private oAuth2Service: OAuth2Service,
         private router: Router, 
+        private logger: LoggerService,
         private activatedRoute: ActivatedRoute) {
 
         this.AUTHORIZATION_URL = this.oAuth2Service.getAuthorizationURL();
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
             const code: string = queryParams['code'];
             if (code) {
-                console.log('found code' + code);
+                this.logger.debug('found code' + code);
                 this.oAuth2Service.getToken(code)
                 .skipWhile(response => {
                     return (response === undefined) ? true : false ;
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    routeToAuthorisationServer(): void {
-        this.oAuth2Service.getAuthorizationURL();
+    onLogOut(): void {
+        this.token = undefined;
+        this.oAuth2Service.logOut();
     }
 }
