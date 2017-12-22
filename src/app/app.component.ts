@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalUtilService, HttpUtilService, OAuth2Service } from './components/common/services/all';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +7,9 @@ import { GlobalUtilService, HttpUtilService, OAuth2Service } from './components/
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
 
-  constructor(private authService: OAuth2Service) {
+  constructor(private title: Title) {
+    this.title.setTitle('Sikar-Library');
   }
+
 }
