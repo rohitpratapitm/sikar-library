@@ -7,7 +7,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Production server
 The app has been deployed on Heroku Cloud and can be accessed on the following URL:
-https://dashboard.heroku.com/apps/sikar-library
+https://sikar-library.herokuapp.com
 
 ## Development server
 
